@@ -257,7 +257,9 @@ class UdifyModel(Model):
         else:
             return tokens
 
-    def decode(self, output_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+    def make_output_human_readable(
+        self, output_dict: Dict[str, torch.Tensor]
+    ) -> Dict[str, torch.Tensor]:
         for task in self.tasks:
             self.decoders[task].decode(output_dict)
 

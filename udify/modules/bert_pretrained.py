@@ -138,7 +138,7 @@ class WordpieceIndexer(TokenIndexer):
 
     @overrides
     def tokens_to_indices(
-        self, tokens: List[Token], vocabulary: Vocabulary, index_name: str
+        self, tokens: List[Token], vocabulary: Vocabulary
     ) -> Dict[str, List[List[int]]]:
         if not self._added_to_vocabulary:
             self._add_encoding_to_vocabulary(vocabulary)
@@ -265,20 +265,20 @@ class WordpieceIndexer(TokenIndexer):
         mask = [1 for _ in offsets]
 
         return {
-            index_name: wordpiece_ids,
-            f"{index_name}-offsets": offsets,
-            f"{index_name}-type-ids": token_type_ids,
+            "bert": wordpiece_ids,
+            "bert-offsets": offsets,
+            "bert-type-ids": token_type_ids,
             "mask": mask,
         }
 
     def get_padding_token(self) -> int:
         return 0
 
-    @overrides
-    def get_padding_lengths(
-        self, token: int
-    ) -> Dict[str, int]:  # pylint: disable=unused-argument
-        return {}
+    # @overrides
+    # def get_padding_lengths(
+    #     self, token: int
+    # ) -> Dict[str, int]:  # pylint: disable=unused-argument
+    #     return {}
 
     def pad_token_sequence(
         self,

@@ -1,3 +1,4 @@
+from allennlp.data import instance
 from typing import Dict, List
 from allennlp.common.util import import_module_and_submodules
 import torch
