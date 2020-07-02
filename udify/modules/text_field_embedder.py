@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 import torch
 from allennlp.common import Params
 from allennlp.common.checks import ConfigurationError
-from allennlp.data import Vocabulary
+from allennlp.data import Vocabulary, TextFieldTensors
 from allennlp.modules.text_field_embedders import TextFieldEmbedder
 from allennlp.modules.time_distributed import TimeDistributed
 from allennlp.modules.token_embedders.token_embedder import TokenEmbedder
@@ -66,7 +66,7 @@ class UdifyTextFieldEmbedder(TextFieldEmbedder):
         return self._output_dim
 
     def forward(
-        self, text_field_input: Dict[str, torch.Tensor], num_wrapping_dims: int = 0
+        self, text_field_input: TextFieldTensors, num_wrapping_dims: int = 0
     ) -> torch.Tensor:
         embedder_keys = self._token_embedders.keys()
         input_keys = text_field_input.keys()
@@ -100,13 +100,13 @@ class UdifyTextFieldEmbedder(TextFieldEmbedder):
             # If we pre-specified a mapping explictly, use that.
             if self._embedder_to_indexer_map is not None:
                 tensors = [
-                    text_field_input[indexer_key]
+                    text_field_input["bert"][indexer_key]
                     for indexer_key in self._embedder_to_indexer_map[key]
                 ]
             else:
                 # otherwise, we assume the mapping between indexers and embedders
                 # is bijective and just use the key directly.
-                tensors = [text_field_input[key]]
+                tensors = [text_field_input["bert"][key]]
             # Note: need to use getattr here so that the pytorch voodoo
             # with submodules works with multiple GPUs.
             embedder = getattr(self, "token_embedder_{}".format(key))

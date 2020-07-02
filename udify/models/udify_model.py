@@ -261,7 +261,7 @@ class UdifyModel(Model):
         self, output_dict: Dict[str, torch.Tensor]
     ) -> Dict[str, torch.Tensor]:
         for task in self.tasks:
-            self.decoders[task].decode(output_dict)
+            self.decoders[task].make_output_human_readable(output_dict)
 
         return output_dict
 
