@@ -35,4 +35,4 @@ def model():
 
 
 def test_call(model):
-    model([["Who", "are", "you", "?"]])
+    print(model([["Who", "are", "you", "?"]]))
