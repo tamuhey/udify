@@ -21,6 +21,5 @@ jobs:
       - run: wget https://github.com/tamuhey/udify/releases/download/udify_model/archive.tar.gz -O data/archive.tar.gz
       - name: Test with pytest
         run: |
-          pip install pytest
-          pytest
+          poetry run pytest
         
