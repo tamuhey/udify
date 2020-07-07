@@ -212,7 +212,10 @@ class TagDecoder(Model):
             for metric in self.features_metrics[feature].values():
                 metric(logits, gold_tags[feature], mask.float())
 
-    def decode(self, output_dict: Dict[str, torch.Tensor]) -> Dict[str, torch.Tensor]:
+    @overrides
+    def make_output_human_readable(
+        self, output_dict: Dict[str, torch.Tensor]
+    ) -> Dict[str, torch.Tensor]:
         all_words = output_dict["words"]
 
         all_predictions = (

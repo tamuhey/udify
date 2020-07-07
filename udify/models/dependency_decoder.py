@@ -243,7 +243,8 @@ class DependencyDecoder(Model):
 
         return output_dict
 
-    def make_output_huma_readable(
+    @overrides
+    def make_output_human_readable(
         self, output_dict: Dict[str, torch.Tensor]
     ) -> Dict[str, torch.Tensor]:
 

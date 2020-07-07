@@ -9,12 +9,9 @@ from pathlib import Path
 from udify.models.udify_model import OUTPUTS  # type: ignore
 
 
-def test_import():
-    import_module_and_submodules("udify")
-
-
 @pytest.fixture(scope="session")
 def model():
+    import_module_and_submodules("udify")
     archive = load_archive(
         str((Path(__file__).parent / ".." / "data" / "archive").absolute())
     )
