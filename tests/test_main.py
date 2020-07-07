@@ -6,7 +6,7 @@ import pytest
 from allennlp.data import DatasetReader
 from allennlp.models.archival import load_archive
 from pathlib import Path
-from udify.models.udify_model import OUTPUTS as UdifyOUTPUTS  # type: ignore
+from udify.models.udify_model import OUTPUTS  # type: ignore
 
 
 def test_import():
@@ -35,4 +35,12 @@ def model():
 
 
 def test_call(model):
-    print(model([["Who", "are", "you", "?"]]))
+    output = model([["Who", "are", "you", "?"]])[0]
+    for k in [
+        OUTPUTS.predicted_dependencies,
+        OUTPUTS.upos,
+        OUTPUTS.lemmas,
+        OUTPUTS.predicted_heads,
+    ]:
+        assert k in output
+
