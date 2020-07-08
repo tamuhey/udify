@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 _NEVER_LOWERCASE = ["[UNK]", "[SEP]", "[PAD]", "[CLS]", "[MASK]"]
 
 
-class WordpieceIndexer(TokenIndexer[int]):
+class WordpieceIndexer(TokenIndexer):
     """
     A token indexer that does the wordpiece-tokenization (e.g. for BERT embeddings).
     If you are using one of the pretrained BERT models, you'll want to use the ``PretrainedBertIndexer``
@@ -138,7 +138,7 @@ class WordpieceIndexer(TokenIndexer[int]):
 
     @overrides
     def tokens_to_indices(
-        self, tokens: List[Token], vocabulary: Vocabulary, index_name: str
+        self, tokens: List[Token], vocabulary: Vocabulary
     ) -> Dict[str, List[List[int]]]:
         if not self._added_to_vocabulary:
             self._add_encoding_to_vocabulary(vocabulary)
@@ -265,23 +265,21 @@ class WordpieceIndexer(TokenIndexer[int]):
         mask = [1 for _ in offsets]
 
         return {
-            index_name: wordpiece_ids,
-            f"{index_name}-offsets": offsets,
-            f"{index_name}-type-ids": token_type_ids,
+            "bert": wordpiece_ids,
+            "bert-offsets": offsets,
+            "bert-type-ids": token_type_ids,
             "mask": mask,
         }
 
-    @overrides
     def get_padding_token(self) -> int:
         return 0
 
-    @overrides
-    def get_padding_lengths(
-        self, token: int
-    ) -> Dict[str, int]:  # pylint: disable=unused-argument
-        return {}
+    # @overrides
+    # def get_padding_lengths(
+    #     self, token: int
+    # ) -> Dict[str, int]:  # pylint: disable=unused-argument
+    #     return {}
 
-    @overrides
     def pad_token_sequence(
         self,
         tokens: Dict[str, List[int]],
@@ -293,7 +291,6 @@ class WordpieceIndexer(TokenIndexer[int]):
             for key, val in tokens.items()
         }
 
-    @overrides
     def get_keys(self, index_name: str) -> List[str]:
         """
         We need to override this because the indexer generates multiple keys.

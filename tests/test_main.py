@@ -1,19 +1,17 @@
+from allennlp.data import instance
 from typing import Dict, List
-from allennlp.common.util import import_submodules
+from allennlp.common.util import import_module_and_submodules
 import torch
 import pytest
 from allennlp.data import DatasetReader
 from allennlp.models.archival import load_archive
 from pathlib import Path
-from udify.models.udify_model import OUTPUTS as UdifyOUTPUTS  # type: ignore
-
-
-def test_import():
-    import_submodules("udify")
+from udify.models.udify_model import OUTPUTS  # type: ignore
 
 
 @pytest.fixture(scope="session")
 def model():
+    import_module_and_submodules("udify")
     archive = load_archive(
         str((Path(__file__).parent / ".." / "data" / "archive").absolute())
     )
@@ -34,4 +32,12 @@ def model():
 
 
 def test_call(model):
-    outputs = model([["Who", "are", "you", "?"]])
+    output = model([["Who", "are", "you", "?"]])[0]
+    for k in [
+        OUTPUTS.predicted_dependencies,
+        OUTPUTS.upos,
+        OUTPUTS.lemmas,
+        OUTPUTS.predicted_heads,
+    ]:
+        assert k in output
+
