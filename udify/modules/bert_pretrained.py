@@ -17,7 +17,7 @@ from pytorch_pretrained_bert.modeling import BertModel, BertConfig
 from allennlp.common.util import pad_sequence_to_length
 from allennlp.modules.token_embedders import TokenEmbedder
 from allennlp.data.vocabulary import Vocabulary
-from allennlp.data.tokenizers.token import Token
+from allennlp.data.tokenizers import Token
 from allennlp.data.token_indexers.token_indexer import TokenIndexer
 from allennlp.nn import util
 
