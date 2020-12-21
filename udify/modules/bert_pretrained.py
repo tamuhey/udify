@@ -9,8 +9,8 @@ from typing import Callable, Dict, List
 import torch
 import torch.nn.functional as F
 from allennlp.common.util import pad_sequence_to_length
-from allennlp.data.token_indexers.token_indexer import TokenIndexer
-from allennlp.data.tokenizers.token import Token
+from allennlp.data.token_indexers import TokenIndexer
+from allennlp.data.tokenizers import Token
 from allennlp.data.vocabulary import Vocabulary
 from allennlp.modules.token_embedders import TokenEmbedder
 from allennlp.nn import util
